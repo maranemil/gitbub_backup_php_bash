@@ -3,5 +3,5 @@ Backup script for User Repos
 
 usage:
 
-step1: add your username in clone.sh as orgname
-step2: run "sh clone.sh" in terminal
+* step1: add your username in clone.sh as orgname
+* step2: run "sh clone.sh" in terminal
