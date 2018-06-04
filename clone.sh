@@ -1,27 +1,25 @@
 #!/bin/bash
 
-# PHPGames
-# http://www.tldp.org/LDP/abs/html/abs-guide.html
-
 # -----------------------------------
 # set user name from git
 # -----------------------------------
-orgname="your_user_name"
+orgname="usrname"
 
 # -----------------------------------
-# get list of projects
+# get list of projects from api.github.com
 # -----------------------------------
 php -f get_git_list.php -- $orgname
 
 # -----------------------------------
-# clone projects
+# clone projects from listprojects.txt
 # -----------------------------------
 while read F  ; do
-        echo $F
+  	echo $F
+  	sleep 2
 	git clone $F
-done <listprojects.txt
+done < listprojects.txt
 
 # -----------------------------------
-# make zip of git projects
+# make zip of git projects cloned in current folder
 # -----------------------------------
 for i in */; do zip -r "${i%/}.zip" "$i"; done
