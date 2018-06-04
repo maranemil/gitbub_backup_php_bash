@@ -6,31 +6,48 @@
  * Time: 23:13
  */
 
-
 ini_set('error_reporting', 0);
 ini_set('display_errors', true);
 ini_set('display_startup_errors', true);
 
-# Substitute variables here if needed
-//$ORG_NAME = "PHPGames"; # <USER_NAME>
-$ORG_NAME = $argv[1];
-$GITHUB_INSTANCE = "api.github.com"; # <GITHUB INSTANCE>
-$URL = "https://{$GITHUB_INSTANCE}/users/{$ORG_NAME}/repos";
-
-# run curl in shell
-$cmd = "curl -s {$URL}";
-$resJson = shell_exec($cmd);
-$resArGit = (array) json_decode($resJson,true);
-//print "<pre>"; print_r($resArGit); die();
-
-# generate file
-//$fp = fopen("listprojects".date("YmdHis").".txt","w");
+# generate empty text file
 $fp = fopen("listprojects.txt","w");
 fwrite($fp, "");
 
-$fp = fopen("listprojects.txt","a");
-foreach($resArGit as $repoGit){
-    fwrite($fp, $repoGit["clone_url"]."\n");
+/*
+https://developer.github.com/v3/#pagination
+*/
+
+# Substitute variables here if needed
+$ORG_NAME = $argv[1]; // get username as argument
+$intPages = 8; // 8 x 50 = 400 max repos
+$GITHUB_INSTANCE = "api.github.com"; # <GITHUB INSTANCE>
+
+for($intLoop = 0; $intLoop <=$intPages; $intLoop++) {
+
+	$URL = "https://{$GITHUB_INSTANCE}/users/{$ORG_NAME}/repos?page=".$intLoop."&per_page=50";
+	echo $URL.PHP_EOL;
+
+	# run curl in shell
+	$cmd = "curl -s {$URL}";
+	$resJson = shell_exec($cmd);
+	$resArGit = (array) json_decode($resJson,true);
+	
+	// append in file when repo found
+	$fp = fopen("listprojects.txt","a");
+	foreach($resArGit as $repoGit){
+		
+		echo $repoGit["clone_url"].PHP_EOL;
+	
+		$arGitPath = explode("/",$repoGit["clone_url"]);
+		$strGitDirName = $arGitPath[count($arGitPath)-1];
+		$strGitDirName = str_replace(".git","",$strGitDirName);
+		
+		if(!is_file($strGitDirName.".zip")){
+			fwrite($fp, $repoGit["clone_url"]."\n");
+		}
+    
+	}
 }
 
 /*
