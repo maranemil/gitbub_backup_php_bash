@@ -1,8 +1,8 @@
-# gitbub_backup_php_bash
+# github_backup_php_bash
 - GitHub Backup script for User Repos
-- Max Repos readed from Github 8 pages x 50 items = 400 
+- Max Repos read from Github 8 pages x 50 items = 400 
 
-#### step1: add your username in clone.sh as orgname
+#### step1: add your username in clone.sh as github_name
 * installation
 
 ```sh
@@ -12,11 +12,11 @@ gedit clone.sh
 ```
 * change this line and add your username
 ```sh
-orgname="your_user_name" 
+github_name="your_user_name" 
 ```
 
 #### step2 usage
 * run in terminal
 ```sh
-sh clone.sh
+bash clone.sh
 ```

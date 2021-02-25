@@ -3,21 +3,21 @@
 # -----------------------------------
 # set user name from git
 # -----------------------------------
-orgname="usrname"
+github_name="user_name"
 
 # -----------------------------------
 # get list of projects from api.github.com
 # -----------------------------------
-php -f get_git_list.php -- $orgname
+php -f get_git_list.php -- $github_name
 
 # -----------------------------------
-# clone projects from listprojects.txt
+# clone projects from list_projects.txt
 # -----------------------------------
 while read F  ; do
   	echo $F
   	sleep 2
 	git clone $F
-done < listprojects.txt
+done < list_projects.txt
 
 # -----------------------------------
 # make zip of git projects cloned in current folder
